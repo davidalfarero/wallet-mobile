@@ -9,6 +9,7 @@ const COLORS = {
   income: "#388E3C",
   card: "#FFFFFF",
   shadow: "#000000",
+  loading: "#E5E7EB"
 };
 
 export default COLORS;
