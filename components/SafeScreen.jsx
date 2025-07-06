@@ -1,6 +1,6 @@
 import { View } from "react-native";
-import COLORS from "../constants/Colors";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const SafeScreen = ({ children }) => {
   const insets = useSafeAreaInsets();
@@ -10,7 +10,7 @@ const SafeScreen = ({ children }) => {
       style={{
         paddingTop: insets.top,
         flex: 1,
-        backgroundColor: COLORS.background
+        backgroundColor: Colors.background
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { styles } from '../../assets/styles/authStyles';
-import COLORS from '../../constants/Colors';
+import { COLORS } from '../../constants/Colors';
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -37,9 +37,11 @@ export default function SignUpScreen() {
       // and capture OTP code
       setPendingVerification(true);
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+      if (err.errors?.[0]?.code === "form_identifier_exists") {
+        setError("Email already in use. Choose a different one.");
+      } else {
+        setError("An error occured. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +49,7 @@ export default function SignUpScreen() {
 
   // Handle submission of verification form
   const onVerifyPress = async () => {
+    setIsLoading(true);
     if (!isLoaded) return;
 
     try {
@@ -69,22 +72,45 @@ export default function SignUpScreen() {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   if (pendingVerification) {
     return (
-      <>
-        <Text>Verify your email</Text>
+      <View style={styles.verificationContainer}>
+        <Text style={styles.verificationTitle}>Verify your email</Text>
+        {error ? (
+          <View style={styles.errorBox}>
+            <Ionicons name='alert-circle' size={20} color={COLORS.expense} />
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity onPress={() => setError("")}>
+              <Ionicons name='close' size={20} color={COLORS.textLight} />
+            </TouchableOpacity>
+          </View>
+        ) : null}
+
         <TextInput
+          style={[styles.verificationInput, error && styles.errorInput]}
           value={code}
           placeholder="Enter your verification code"
+          placeholderTextColor="#9A8478"
           onChangeText={(code) => setCode(code)}
         />
-        <TouchableOpacity onPress={onVerifyPress}>
-          <Text>Verify</Text>
+        <TouchableOpacity
+          onPress={onVerifyPress}
+          style={[styles.button, isLoading && styles.loadingButton]}
+          disabled={isLoading}
+        >
+          <View style={styles.buttonContent}>
+            {isLoading && <ActivityIndicator size="small" color="#fff" style={{ marginRight: 8 }} />}
+            <Text style={styles.buttonText}>
+              {isLoading ? 'Verifying...' : 'Verify'}
+            </Text>
+          </View>
         </TouchableOpacity>
-      </>
+      </View>
     );
   }
 
