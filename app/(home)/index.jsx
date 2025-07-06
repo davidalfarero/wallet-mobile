@@ -1,11 +1,13 @@
 import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo';
-import { Link } from 'expo-router';
-import { Image, Text, View } from 'react-native';
-import { SignOutButton } from '@/components/SignOutButton';
+import { useRouter } from 'expo-router';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { SignOutButton } from '../../components/SignOutButton';
 import { styles } from '../../assets/styles/homestyles';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Page() {
   const { user } = useUser();
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -25,6 +27,14 @@ export default function Page() {
                 {user?.emailAddresses[0]?.emailAddress.split('@')[0]}
               </Text>
             </View>
+          </View>
+          {/* RIGHT */}
+          <View style={styles.headerRight}>
+            <TouchableOpacity style={styles.addButton} onPress={() => router.push('/create')}>
+              <Ionicons name='add' size={20} color='#fff' />
+              <Text style={styles.addButtonText}>Add</Text>
+            </TouchableOpacity>
+            <SignOutButton />
           </View>
 
         </View>
