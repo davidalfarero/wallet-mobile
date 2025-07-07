@@ -7,34 +7,99 @@ export const styles = StyleSheet.create(
       flex: 1,
       backgroundColor: COLORS.background,
     },
-    content: {
+    logoContent: {
       padding: 20,
-      paddingBottom: 0,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
-    header: {
+    logo: {
+      width: 100,
+      height: 100,
+    },
+    logoText: {
+      fontSize: 15,
+      fontWeight: 'bold',
+      color: COLORS.primary
+    },
+    balanceCard: {
+      backgroundColor: COLORS.white,
+      marginHorizontal: 10,
+      borderRadius: 16,
+      paddingHorizontal: 20,
+      paddingVertical: 40,
+    },
+    balanceTitle: {
+      fontSize: 15,
+      fontWeight: '500',
+      marginBottom: 10,
+      color: COLORS.text,
+      textAlign: 'center'
+    },
+    balanceAmount: {
+      fontSize: 35,
+      fontWeight: 'bold',
+      marginBottom: 30,
+      color: COLORS.text,
+      textAlign: 'center',
+    },
+    balanceStats: {
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 20,
-      paddingHorizontal: 0,
-      paddingVertical: 12,
     },
-    headerLeft: {
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    headerLogo: {
-      width: 75,
-      height: 75,
-    },
-    welcomeContainer: {
-      flex: 1,
-    },
-    welcomeText: {
+    balanceStatLabel: {
       fontSize: 14,
-      color: COLORS.textLight,
-      marginBottom: 2,
+      marginBottom: 4,
+      marginRight: 10,
+      color: COLORS.text
     },
+    balanceStatAmount: {
+      fontSize: 18,
+      fontWeight: "600",
+    },
+    balanceButton: {
+      flexDirection: "row",
+      justifyContent: "center",
+      gap: 10,
+      paddingVertical: 4,
+    },
+    balanceStatItem: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    statDivider: {
+      borderRightWidth: 1,
+      borderColor: COLORS.border,
+    },
+    transactionHeaderContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 20,
+      marginHorizontal: 10,
+    },
+    transactionTitle: {
+      fontSize: 20,
+      fontWeight: "600",
+      color: COLORS.text,
+    },
+    seeAllButton: {
+      backgroundColor: COLORS.primary,
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      borderRadius: 999,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    seeAllText: {
+      color: COLORS.white,
+      fontWeight: '600',
+      fontSize: 14,
+      textAlign: 'center',
+    }
   }
 );

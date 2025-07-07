@@ -4,40 +4,48 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { SignOutButton } from '../../components/SignOutButton';
 import { styles } from '../../assets/styles/homestyles';
 import { Ionicons } from '@expo/vector-icons';
+import BalanceCard from '../../components/BalanceCard';
+import { useTransactions } from '../../hook/useTransactions';
+import { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Page() {
   const { user } = useUser();
   const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const navigation = useNavigation();
+
+  const { transactions, summary, loading, loadData, deleteTransaction } = useTransactions(user.id);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        {/* HEADER */}
-        <View stlye={styles.header}>
-          {/* LEFT */}
-          <View style={styles.headerLeft}>
-            <Image
-              source={require("../../assets/images/app-logo.png")}
-              style={styles.headerLogo}
-              resizeMode='contain'
-            />
-            <View stlye={styles.welcomeContainer}>
-              <Text style={styles.welcomeText}>Welcome,</Text>
-              <Text style={styles.usernameText}>
-                {user?.emailAddresses[0]?.emailAddress.split('@')[0]}
-              </Text>
-            </View>
-          </View>
-          {/* RIGHT */}
-          <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.addButton} onPress={() => router.push('/create')}>
-              <Ionicons name='add' size={20} color='#fff' />
-              <Text style={styles.addButtonText}>Add</Text>
-            </TouchableOpacity>
-            <SignOutButton />
-          </View>
+      <View style={styles.logoContent}>
+        <Image
+          source={require("../../assets/images/app-logo.png")}
+          style={styles.logo}
+          resizeMode='contain'
+        />
+        <Text style={styles.logoText}>Walletly</Text>
+      </View>
 
-        </View>
+      <BalanceCard summary={summary} />
+
+      <View style={styles.transactionHeaderContainer}>
+        <Text style={styles.transactionTitle}>Recent Transactions</Text>
+        <TouchableOpacity style={styles.seeAllButton} onPress={() => navigation.navigate('transactions')}>
+          <Text style={styles.seeAllText}>See All</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
