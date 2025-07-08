@@ -50,6 +50,12 @@ export const useTransactions = (userId) => {
       const response = await fetch(`${API}/transactions/${id}`, { method: "Delete" });
       if (!response.ok) throw new Error("Failed to delete transaction");
 
+      if (!id) {
+        console.error('No ID provided to deleteTransaction!');
+        Alert.alert('Error', 'Missing transaction ID');
+        return;
+      }
+
       loadData();
       Alert.alert("Success", "Transaction deleted successfully");
     } catch (error) {

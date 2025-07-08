@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 const BalanceCard = ({ summary }) => {
-  console.log("📊 Summary inside BalanceCard:", summary);
   const [showBalance, setShowBalance] = useState(false);
 
   return (

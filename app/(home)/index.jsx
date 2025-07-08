@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo';
 import { useRouter } from 'expo-router';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
 import { SignOutButton } from '../../components/SignOutButton';
 import { styles } from '../../assets/styles/homestyles';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import BalanceCard from '../../components/BalanceCard';
 import { useTransactions } from '../../hook/useTransactions';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import TransactionItems from '../../components/TransactionItems';
 
 export default function Page() {
   const { user } = useUser();
@@ -18,10 +19,17 @@ export default function Page() {
 
   const { transactions, summary, loading, loadData, deleteTransaction } = useTransactions(user.id);
 
-  const onRefresh = async () => {
+  const handleRefresh = async () => {
     setRefreshing(true);
     await loadData();
     setRefreshing(false);
+  };
+
+  const handleDelete = (id) => {
+    Alert.alert("Delete Transaction", "Are you sure you want to delete this transaction?", [
+      { text: "Cancel", style: "Cancel" },
+      { text: "Delete", style: "destructive", onPress: () => deleteTransaction(id) },
+    ]);
   };
 
   useEffect(() => {
@@ -47,6 +55,13 @@ export default function Page() {
           <Text style={styles.seeAllText}>See All</Text>
         </TouchableOpacity>
       </View>
+
+      <TransactionItems
+        transactions={transactions.slice(0, 3)}
+        onDelete={handleDelete}
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
+      />
     </View>
   );
 }

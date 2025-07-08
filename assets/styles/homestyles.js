@@ -100,6 +100,25 @@ export const styles = StyleSheet.create(
       fontWeight: '600',
       fontSize: 14,
       textAlign: 'center',
-    }
+    },
+    emptyContainer: {
+      backgroundColor: COLORS.white,
+      borderRadius: 16,
+      paddingHorizontal: 20,
+      paddingVertical: 40,
+      marginHorizontal: 10,
+    },
+    emptyTitle: {
+      fontSize: 20,
+      fontWeight: '500',
+      color: 'gray',
+      textAlign: 'center',
+      marginBottom: 10,
+    },
+    emptyText: {
+      fontSize: 15,
+      color: 'gray',
+      textAlign: 'center',
+    },
   }
 );
