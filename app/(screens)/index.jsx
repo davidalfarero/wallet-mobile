@@ -7,6 +7,8 @@ import BalanceCard from '../../components/BalanceCard';
 import PageLoader from '../../components/PageLoader';
 import TransactionItems from '../../components/TransactionItems';
 import { useTransactions } from '../../hook/useTransactions';
+import { SignOutButton } from '../../components/SignOutButton';
+import ProfileButton from '../../components/ProfileButton';
 
 export default function Page() {
   const { user } = useUser();
@@ -31,6 +33,9 @@ export default function Page() {
         />
         <Text style={styles.logoText}>Walletly</Text>
       </View>
+
+      <ProfileButton />
+      <SignOutButton />
 
       <BalanceCard summary={summary} />
 

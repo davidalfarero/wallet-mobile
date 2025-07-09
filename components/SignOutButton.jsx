@@ -1,9 +1,9 @@
 import { useClerk } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { Alert, Text, TouchableOpacity } from 'react-native';
-import { COLORS } from '../constants/Colors';
-import { styles } from '../assets/styles/profileStyles';
 import { useState } from 'react';
+import { Alert, TouchableOpacity, View } from 'react-native';
+import { styles } from '../assets/styles/homestyles';
+import { COLORS } from '../constants/Colors';
 
 export const SignOutButton = () => {
   const { signOut } = useClerk();
@@ -30,15 +30,15 @@ export const SignOutButton = () => {
   };
 
   return (
-    <TouchableOpacity
-      style={[styles.signoutButton, isSigningout && styles.activeSignoutButton]}
-      onPress={handleSignOut}
-      disabled={isSigningout}
-    >
-      <Text style={styles.signoutText}>
-        {isSigningout ? 'Signing Out...' : 'Sign Out'}
-      </Text>
-      <Ionicons name='log-out-outline' size={25} color={COLORS.white} />
-    </TouchableOpacity>
+    <View style={styles.signoutContainer}>
+      <TouchableOpacity
+        style={[styles.signoutButton]}
+        onPress={handleSignOut}
+        disabled={isSigningout}
+        activeOpacity={0.7}
+      >
+        <Ionicons name='log-out-outline' size={24} color={COLORS.primary} />
+      </TouchableOpacity>
+    </View>
   );
 };

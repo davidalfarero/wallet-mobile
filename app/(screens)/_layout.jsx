@@ -29,16 +29,6 @@ export default function HomeLayout() {
       />
 
       <Tabs.Screen
-        name="transactions"
-        options={{
-          tabBarLabel: "Transactions",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-outline" size={size} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="add"
         options={{
           tabBarLabel: '',
@@ -67,23 +57,12 @@ export default function HomeLayout() {
         }}
       />
 
-
       <Tabs.Screen
-        name="categories"
+        name="transactions"
         options={{
-          tabBarLabel: "Categories",
+          tabBarLabel: "Transactions",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="grid-outline" size={size} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
+            <Ionicons name="list-outline" size={size} color={color} />
           ),
         }}
       />

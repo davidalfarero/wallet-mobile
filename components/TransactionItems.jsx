@@ -5,16 +5,16 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { COLORS } from '../constants/Colors';
 import { formatDate } from '../lib/formatDate';
 import { useUser } from '@clerk/clerk-expo';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useTransactions } from '../hook/useTransactions';
 import PageLoader from './PageLoader';
+import TransactionFilter from './TransactionFilter';
 
-const TransactionItems = ({ transactions: passedTransactions, detailed = false, limit = null, }) => {
+const TransactionItems = ({ showHeader = false, detailed = false, limit = null }) => {
   const { user } = useUser();
+  const [filter, setFilter] = useState('all');
   const [refreshing, setRefreshing] = useState(false);
-  const { transactions: hookTransactions, loadData, deleteTransaction, loading } = useTransactions(user.id);
-
-  const transactions = passedTransactions || hookTransactions;
+  const { transactions, loadData, deleteTransaction, loading } = useTransactions(user.id);
 
   const categoryIcons = {
     Income: 'cash-outline',
@@ -23,8 +23,17 @@ const TransactionItems = ({ transactions: passedTransactions, detailed = false, 
     Transport: 'car-outline',
     Entertainment: 'game-controller-outline',
     Shopping: 'cart-outline',
-    Other: 'ellipse-outline',
+    Other: 'ellipsis-horizontal-circle-outline',
   };
+
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter((item) => {
+      const category = item.category.toLowerCase();
+      if (filter === 'income') return category === 'income';
+      if (filter === 'expense') return category !== 'income';
+      return true;
+    });
+  }, [transactions, filter]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -43,16 +52,8 @@ const TransactionItems = ({ transactions: passedTransactions, detailed = false, 
     loadData();
   }, [loadData]);
 
-  useEffect(() => {
-    if (!passedTransactions) {
-      loadData();
-    }
-  }, [loadData, passedTransactions]);
+  if (loading) return <PageLoader />;
 
-  // Show loader only if we're not using passed transactions and we're loading
-  if (!passedTransactions && loading) {
-    return <PageLoader />;
-  }
 
   const renderItem = ({ item }) => {
     const iconName = categoryIcons[item.category] || categoryIcons['Other'];
@@ -89,22 +90,35 @@ const TransactionItems = ({ transactions: passedTransactions, detailed = false, 
     );
   };
 
+
+
   return (
-    <FlatList
-      data={limit ? transactions.slice(0, limit) : transactions}
-      renderItem={renderItem}
-      keyExtractor={(item) => item._id}
-      ListEmptyComponent={<EmptyTransaction />}
-      onRefresh={handleRefresh}
-      refreshing={refreshing}
-      onEndReachedThreshold={0.1}
-      loadData={loadData}
-      ListFooterComponent={
-        <Text style={{ textAlign: 'center', marginVertical: 12, color: 'gray' }}>
-          Pull down to refresh
-        </Text>
-      }
-    />
+    <>
+      {showHeader && (
+        <>
+          <TransactionFilter selected={filter} onChange={setFilter} />
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalText}>Total Transactions: </Text>
+            <Text style={styles.totalNumber}>{filteredTransactions?.length || 0}</Text>
+          </View>
+        </>
+      )}
+      <FlatList
+        data={limit ? filteredTransactions.slice(0, limit) : filteredTransactions}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id}
+        ListEmptyComponent={<EmptyTransaction />}
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
+        onEndReachedThreshold={0.1}
+        loadData={loadData}
+        ListFooterComponent={
+          <Text style={{ textAlign: 'center', marginVertical: 12, color: 'gray' }}>
+            Pull down to refresh
+          </Text>
+        }
+      />
+    </>
   );
 };
 export default TransactionItems;

@@ -70,6 +70,9 @@ export const styles = StyleSheet.create(
       marginHorizontal: 12,
     },
     filterButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 5,
       paddingVertical: 6,
       paddingHorizontal: 16,
       borderRadius: 20,
