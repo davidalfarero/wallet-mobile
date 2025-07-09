@@ -9,6 +9,7 @@ import { useTransactions } from '../../hook/useTransactions';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import TransactionItems from '../../components/TransactionItems';
+import PageLoader from '../../components/PageLoader';
 
 export default function Page() {
   const { user } = useUser();
@@ -36,6 +37,8 @@ export default function Page() {
     loadData();
   }, [loadData]);
 
+  if (loading) return <PageLoader />;
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContent}>
@@ -56,12 +59,7 @@ export default function Page() {
         </TouchableOpacity>
       </View>
 
-      <TransactionItems
-        transactions={transactions.slice(0, 3)}
-        onDelete={handleDelete}
-        onRefresh={handleRefresh}
-        refreshing={refreshing}
-      />
+      <TransactionItems detailed={false} limit={3} />
     </View>
   );
 }

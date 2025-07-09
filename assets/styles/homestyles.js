@@ -7,6 +7,12 @@ export const styles = StyleSheet.create(
       flex: 1,
       backgroundColor: COLORS.background,
     },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: COLORS.background,
+    },
     logoContent: {
       padding: 20,
       flexDirection: 'row',

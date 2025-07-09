@@ -1,18 +1,20 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import EmptyTransaction from './EmptyTransaction';
 import { styles } from '../assets/styles/transactionStyles';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { COLORS } from '../constants/Colors';
 import { formatDate } from '../lib/formatDate';
+import { useUser } from '@clerk/clerk-expo';
+import { useEffect, useState } from 'react';
+import { useTransactions } from '../hook/useTransactions';
+import PageLoader from './PageLoader';
 
-const TransactionItems = ({
-  transactions,
-  onRefresh,
-  refreshing,
-  onDelete,
-  detailed = false
-}) => {
+const TransactionItems = ({ transactions: passedTransactions, detailed = false, limit = null, }) => {
+  const { user } = useUser();
+  const [refreshing, setRefreshing] = useState(false);
+  const { transactions: hookTransactions, loadData, deleteTransaction, loading } = useTransactions(user.id);
 
+  const transactions = passedTransactions || hookTransactions;
 
   const categoryIcons = {
     Income: 'cash-outline',
@@ -23,6 +25,34 @@ const TransactionItems = ({
     Shopping: 'cart-outline',
     Other: 'ellipse-outline', // fallback
   };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  };
+
+  const handleDelete = (id) => {
+    Alert.alert("Delete Transaction", "Are you sure you want to delete this transaction?", [
+      { text: "Cancel", style: "Cancel" },
+      { text: "Delete", style: "destructive", onPress: () => deleteTransaction(id) },
+    ]);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  useEffect(() => {
+    if (!passedTransactions) {
+      loadData();
+    }
+  }, [loadData, passedTransactions]);
+
+  // Show loader only if we're not using passed transactions and we're loading
+  if (!passedTransactions && loading) {
+    return <PageLoader />;
+  }
 
   const renderItem = ({ item }) => {
     const iconName = categoryIcons[item.category] || categoryIcons['Other'];
@@ -36,7 +66,7 @@ const TransactionItems = ({
 
           {detailed && (
             <Text style={{ color: 'gray', fontSize: 12 }}>
-              {formatDate(item.createdAt)}
+              {formatDate(item.createdAt || new Date())}
             </Text>
           )}
 
@@ -52,8 +82,8 @@ const TransactionItems = ({
 
         <View style={styles.transactionDivider} />
 
-        <TouchableOpacity onPress={() => onDelete(item._id)}>
-          <Ionicons name='trash-outline' size={25} color='red' />
+        <TouchableOpacity onPress={() => handleDelete(item._id)}>
+          <Ionicons name='trash-outline' size={25} color='gray' />
         </TouchableOpacity>
       </View>
     );
@@ -61,14 +91,14 @@ const TransactionItems = ({
 
   return (
     <FlatList
-      data={transactions}
+      data={limit ? transactions.slice(0, limit) : transactions}
       renderItem={renderItem}
       keyExtractor={(item) => item._id}
       ListEmptyComponent={<EmptyTransaction />}
-      onRefresh={onRefresh}
+      onRefresh={handleRefresh}
       refreshing={refreshing}
-      onEndReached={onRefresh}
       onEndReachedThreshold={0.1}
+      loadData={loadData}
       ListFooterComponent={
         <Text style={{ textAlign: 'center', marginVertical: 12, color: 'gray' }}>
           Pull down to refresh

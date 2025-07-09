@@ -9,7 +9,7 @@ export const useTransactions = (userId) => {
     income: 0,
     expenses: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const getTransactions = useCallback(async () => {
@@ -24,7 +24,6 @@ export const useTransactions = (userId) => {
 
   const getSummary = useCallback(async () => {
     try {
-      console.log("🔗 Fetching summary from:", `${API}/transactions/summary/${userId}`);
       const response = await fetch(`${API}/transactions/summary/${userId}`);
       const data = await response.json();
       setSummary(data);
