@@ -1,6 +1,8 @@
 import { useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
+import { View } from "react-native";
+import { COLORS } from "../../constants/Colors";
 
 export default function HomeLayout() {
   const { isSignedIn, isLoaded } = useUser();
@@ -39,12 +41,32 @@ export default function HomeLayout() {
       <Tabs.Screen
         name="add"
         options={{
-          tabBarLabel: "Add",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="add-circle-outline" size={size} color={color} />
+          tabBarLabel: '',
+          tabBarIcon: ({ color, size, focused }) => (
+            <View
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+                backgroundColor: COLORS.primary,
+                borderWidth: 1,
+                borderColor: COLORS.border,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 10,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 5,
+                elevation: 5,
+              }}
+            >
+              <Ionicons name="add" size={30} color={COLORS.white} />
+            </View>
           ),
         }}
       />
+
 
       <Tabs.Screen
         name="categories"
@@ -57,11 +79,11 @@ export default function HomeLayout() {
       />
 
       <Tabs.Screen
-        name="settings"
+        name="profile"
         options={{
-          tabBarLabel: "Settings",
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
+            <Ionicons name="person-outline" size={size} color={color} />
           ),
         }}
       />

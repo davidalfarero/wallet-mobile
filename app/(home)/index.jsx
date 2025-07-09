@@ -1,37 +1,19 @@
-import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo';
-import { useRouter } from 'expo-router';
-import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
-import { SignOutButton } from '../../components/SignOutButton';
-import { styles } from '../../assets/styles/homestyles';
-import { Ionicons } from '@expo/vector-icons';
-import BalanceCard from '../../components/BalanceCard';
-import { useTransactions } from '../../hook/useTransactions';
-import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/clerk-expo';
 import { useNavigation } from '@react-navigation/native';
-import TransactionItems from '../../components/TransactionItems';
+import { useEffect } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { styles } from '../../assets/styles/homestyles';
+import BalanceCard from '../../components/BalanceCard';
 import PageLoader from '../../components/PageLoader';
+import TransactionItems from '../../components/TransactionItems';
+import { useTransactions } from '../../hook/useTransactions';
 
 export default function Page() {
   const { user } = useUser();
-  const router = useRouter();
-  const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation();
 
-  const { transactions, summary, loading, loadData, deleteTransaction } = useTransactions(user.id);
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await loadData();
-    setRefreshing(false);
-  };
-
-  const handleDelete = (id) => {
-    Alert.alert("Delete Transaction", "Are you sure you want to delete this transaction?", [
-      { text: "Cancel", style: "Cancel" },
-      { text: "Delete", style: "destructive", onPress: () => deleteTransaction(id) },
-    ]);
-  };
+  const { summary, loading, loadData } = useTransactions(user.id);
 
   useEffect(() => {
     loadData();

@@ -23,7 +23,7 @@ const TransactionItems = ({ transactions: passedTransactions, detailed = false, 
     Transport: 'car-outline',
     Entertainment: 'game-controller-outline',
     Shopping: 'cart-outline',
-    Other: 'ellipse-outline', // fallback
+    Other: 'ellipse-outline',
   };
 
   const handleRefresh = async () => {
