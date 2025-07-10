@@ -166,5 +166,38 @@ export const styles = StyleSheet.create(
       color: 'gray',
       textAlign: 'center',
     },
+    refreshContainer: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      zIndex: 10,
+    },
+    refreshButton: {
+      backgroundColor: COLORS.white,
+      borderRadius: 999,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+      borderWidth: 1,
+      borderColor: COLORS.border,
+    },
+    loadingOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      borderRadius: 16,
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 999,
+    }
   }
 );

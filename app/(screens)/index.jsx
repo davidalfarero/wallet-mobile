@@ -5,10 +5,9 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../assets/styles/homestyles';
 import BalanceCard from '../../components/BalanceCard';
 import PageLoader from '../../components/PageLoader';
+import { SignOutButton } from '../../components/SignOutButton';
 import TransactionItems from '../../components/TransactionItems';
 import { useTransactions } from '../../hook/useTransactions';
-import { SignOutButton } from '../../components/SignOutButton';
-import ProfileButton from '../../components/ProfileButton';
 
 export default function Page() {
   const { user } = useUser();
@@ -27,14 +26,13 @@ export default function Page() {
     <View style={styles.container}>
       <View style={styles.logoContent}>
         <Image
-          source={require("../../assets/images/app-logo.png")}
+          source={require("../../assets/images/app-logo.webp")}
           style={styles.logo}
           resizeMode='contain'
         />
         <Text style={styles.logoText}>Walletly</Text>
       </View>
 
-      <ProfileButton />
       <SignOutButton />
 
       <BalanceCard summary={summary} />

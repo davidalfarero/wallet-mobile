@@ -59,7 +59,7 @@ export default function Page() {
     >
       <View style={styles.container}>
         <View style={{ alignItems: 'center' }}>
-          <Image source={require("../../assets/images/signin-logo.png")} style={styles.logo} />
+          <Image source={require("../../assets/images/signin-logo.webp")} style={styles.logo} />
         </View>
 
         <Text style={styles.title}>Sign In</Text>

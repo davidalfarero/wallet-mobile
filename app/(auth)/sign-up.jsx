@@ -124,10 +124,10 @@ export default function SignUpScreen() {
     >
       <View style={styles.container}>
         <View style={{ alignItems: 'center' }}>
-          <Image source={require("../../assets/images/signup-logo.png")} style={styles.logo} />
+          <Image source={require("../../assets/images/signup-logo.webp")} style={styles.logo} />
         </View>
 
-        <Text style={styles.title}>Sign Up</Text>
+        <Text style={styles.title}>Create Account</Text>
 
         {error ? (
           <View style={styles.errorBox}>

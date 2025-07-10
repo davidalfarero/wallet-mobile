@@ -1,14 +1,42 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../assets/styles/homestyles';
 import { COLORS } from '../constants/Colors';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { useTransactions } from '../hook/useTransactions';
+import { useUser } from '@clerk/clerk-expo';
 
 const BalanceCard = ({ summary }) => {
+  const user = useUser();
+  const [refresh, setRefresh] = useState(false);
   const [showBalance, setShowBalance] = useState(false);
+
+  const { loadData } = useTransactions(user.id);
+
+  const handleRefresh = async () => {
+    setRefresh(true);
+    try {
+      await loadData();
+      setShowBalance(true);
+      setTimeout(() => {
+        setRefresh(false);
+      }, 1500);
+    } catch (err) {
+      console.error('Refresh failed:', err);
+      setRefresh(false);
+    }
+  };
 
   return (
     <View style={styles.balanceCard}>
+      <TouchableOpacity
+        style={styles.refreshContainer}
+        onPress={handleRefresh}
+        disabled={refresh}
+      >
+        <Text style={styles.refreshButton}>{refresh ? 'Refreshing...' : 'Refresh'}</Text>
+      </TouchableOpacity>
+
       <Text style={styles.balanceTitle}>💳 Total Balance</Text>
       <TouchableOpacity
         onPress={() => setShowBalance((prev) => !prev)}
@@ -51,6 +79,10 @@ const BalanceCard = ({ summary }) => {
           </Text>
         </View>
       </View>
+
+      {refresh && (
+        <ActivityIndicator size="small" color={COLORS.primary} style={styles.loadingOverlay} />
+      )}
     </View>
   );
 };
