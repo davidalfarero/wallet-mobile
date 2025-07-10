@@ -2,7 +2,7 @@ import { ClerkProvider } from '@clerk/clerk-expo';
 import { Slot } from 'expo-router';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import SafeScreen from '@/components/SafeScreen';
-import { StatusBar } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 export default function RootLayoutNav() {
   return (
@@ -10,7 +10,7 @@ export default function RootLayoutNav() {
       <SafeScreen>
         <Slot />
       </SafeScreen>
-      <StatusBar style='dark' />
+      <StatusBar style="dark" hidden={false} backgroundColor="#fff" />
     </ClerkProvider>
   );
 }

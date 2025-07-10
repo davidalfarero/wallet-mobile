@@ -1,21 +1,17 @@
-import { View } from "react-native";
+import { SafeAreaView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { COLORS } from '../constants/Colors';
 
-const SafeScreen = ({ children }) => {
+export default function SafeScreen({ children }) {
   const insets = useSafeAreaInsets();
 
   return (
-    <View
-      style={{
-        paddingTop: insets.top,
-        flex: 1,
-        backgroundColor: Colors.background
-      }}
-    >
+    <SafeAreaView style={{
+      paddingTop: insets.top,
+      flex: 1,
+      backgroundColor: COLORS.white,
+    }}>
       {children}
-    </View>
+    </SafeAreaView>
   );
-};
-
-export default SafeScreen;
+}
